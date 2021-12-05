@@ -1,0 +1,38 @@
+import "./styles.css";
+
+import { useCallback, useState } from "react";
+import { ThemeProvider } from "styled-components";
+import { AppContainer, MainSection } from "./components/app.style";
+import { Button } from "./components/button.style";
+import { themes } from "./themes";
+
+function App() {
+  // useState que armazena o tema atual da aplicação
+  const [currentTheme, setCurrentTheme] = useState("light");
+
+  // variável que armazena o text do tema que não
+  // está sendo usado no momento, para personalizar o texto do botão
+  const getOpositeTheme = useCallback(
+    () => (currentTheme === "light" ? "dark" : "light"),
+    [currentTheme]
+  );
+
+  return (
+    // <ThemeProvider> é o componente auxiliar da biblioteca
+    // styled-components que prove as informações do tema atual
+    // atraves da props theme para todos componentes que estão dentro dele.
+
+    <ThemeProvider theme={themes[currentTheme]}>
+      <AppContainer>
+        <MainSection>
+          <h1>You are in {currentTheme} mode</h1>
+          <Button onClick={() => setCurrentTheme(getOpositeTheme())}>
+            Switch to {getOpositeTheme()}
+          </Button>
+        </MainSection>
+      </AppContainer>
+    </ThemeProvider>
+  );
+}
+
+export default App;
